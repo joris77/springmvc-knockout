@@ -1,4 +1,4 @@
-package nl.smartworkx.springmvc;
+package nl.smartworkx.springmvc.infra.app;
 
 /**
  * User: joris
