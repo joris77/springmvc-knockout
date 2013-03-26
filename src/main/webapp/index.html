@@ -1,0 +1,33 @@
+<html>
+<head>
+
+</head>
+<body>
+<div id="menu">
+  <button data-bind="click: function(d,e){ show('home') }">Home</button>
+  <button data-bind="click: function(d,e){ show('edit') }">Edit template</button>
+</div>
+<div id="content" data-bind="template : {name: page()}">
+
+</div>
+
+<script id="home" type="text/html">
+    <h1>Welkom</h1>
+</script>
+
+<script id="edit" type="text/html">
+    <form method="POST">
+        <div data-bind="with: form">
+            <input type="text" name="name" data-bind="value: name">
+        </div>
+        <input type="submit" data-bind="click: save">
+    </form>
+</script>
+
+<script src="js/vendor/jquery/jquery-1.8.2.js"></script>
+<script src="js/vendor/knockout/knockout-2.2.0.js"></script>
+<script src="js/app.js"></script>
+
+
+</body>
+</html>
