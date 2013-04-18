@@ -1,11 +1,12 @@
 <html>
 <head>
-
+    <link href="/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/app.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="menu">
-  <button data-bind="click: function(d,e){ show('home') }">Home</button>
-  <button data-bind="click: function(d,e){ show('edit') }">Edit template</button>
+    <button data-bind="click: function(d,e){ show('home') }">Home</button>
+    <button data-bind="click: function(d,e){ show('edit') }">Edit template</button>
 </div>
 <div id="content" data-bind="template : {name: page()}">
 
@@ -16,16 +17,32 @@
 </script>
 
 <script id="edit" type="text/html">
-    <form method="POST">
+    <form method="POST" data-bind="validation: form">
         <div data-bind="with: form">
-            <input type="text" name="name" data-bind="value: name">
+            <div class="control-group">
+                <label class="control-label" for="name" data-bind="text:name.label"></label>
+
+                <div class="controls">
+                    <input id="name" type="text" name="name" data-bind="value: name">
+                    <span class="help-inline" data-bind="errors: name.errors"/>
+                </div>
+            </div>
+            <div>
+                <label for="account">Account</label>
+
+                <div class="controls">
+                    <input id="account" type="text" name="account" data-bind="value: account">
+                    <span class="help-inline" data-bind="errors: accountErrors"/>
+                </div>
+            </div>
+
         </div>
         <input type="submit" data-bind="click: save">
     </form>
 </script>
 
-<script src="js/vendor/jquery/jquery-1.8.2.js"></script>
-<script src="js/vendor/knockout/knockout-2.2.0.js"></script>
+<script src="js/lib/require/require-2.0.6.js"></script>
+<script src="js/require.conf.js"></script>
 <script src="js/app.js"></script>
 
 

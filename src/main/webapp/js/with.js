@@ -16,4 +16,8 @@ var ViewModel = function () {
     }
 }
 
-$(ko.applyBindings(new ViewModel()));
+var viewModel = new ViewModel();
+
+errorPage(viewModel);
+
+$(ko.applyBindings(viewModel));

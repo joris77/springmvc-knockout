@@ -1,48 +1,40 @@
-var ViewModel = function () {
-    var viewModel = this;
+require(["service",
+    "jquery",
+    "knockout",
+    "validation"], function (s, $, ko,v) {
 
-    viewModel.page = ko.observable('home');
+    var templateService = s.templateService;
+
+    var TemplateViewModel = function (templateService)
+    {
+        var viewModel = this;
+
+        viewModel.page = ko.observable('home');
 
 
-    viewModel.show = function(pageName){
-        viewModel.page(pageName);
-    }
-
-    viewModel.form = ko.observable({
-        name: ""
-    });
-
-    viewModel.save = function (data,event) {
-        event.preventDefault();
-        var formValue = ko.utils.unwrapObservable(viewModel.form);
-        if (typeof formValue.id !== 'undefined') {
-            $.ajax({
-                async: false,
-                url: "/service/templates/" + formValue.id,
-                type: "PUT",
-                dataType: "json",
-                contentType: 'application/json',
-                data: JSON.stringify(formValue),
-                success: function (data) {
-                    console.log("Edit success");
-                }
-            });
-        } else {
-            $.ajax({
-                async: false,
-                url: '/service/templates',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(formValue),
-                dataType: "json",
-                success: function (data) {
-                    console.log("Create success " + data.id);
-                    viewModel.form().id = data.id;
-                }
-            });
+        viewModel.show = function (pageName) {
+            viewModel.page(pageName);
         }
 
-    }
-}
+        viewModel.form = v.validatable({
+            name: ko.observable().extend({label: "Name", validations: [v.required]}),
+            account: ko.observable(),
+            accountErrors: ko.observableArray()
+        });
 
-$(ko.applyBindings(new ViewModel()));
+        viewModel.save = function (data, event) {
+            event.preventDefault();
+            var formValue = ko.utils.unwrapObservable(viewModel.form);
+            if (typeof formValue.id !== 'undefined') {
+                templateService.update(formValue);
+            } else {
+                templateService.save(formValue)
+            }
+        }
+    }
+
+    var templateViewModel = new TemplateViewModel(templateService);
+
+    ko.applyBindings(templateViewModel);
+
+});

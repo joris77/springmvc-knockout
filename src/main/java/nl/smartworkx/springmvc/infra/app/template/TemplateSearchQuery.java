@@ -1,5 +1,6 @@
 package nl.smartworkx.springmvc.infra.app.template;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -10,6 +11,6 @@ import java.util.List;
 public class TemplateSearchQuery {
 
     public List<TemplateSearchRowDto> search(TemplateSearchCriteria criteria){
-
+        return Arrays.asList();
     }
 }

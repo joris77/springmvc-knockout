@@ -21,6 +21,22 @@ liquibaseUrl := "jdbc:mysql://localhost/mvc"
 
 liquibaseChangelog := "src/main/resources/changelog.xml"
 
+seq(jasmineSettings : _*)
+
+appJsDir <+= sourceDirectory { src => src / "main" / "webapp" / "js" }
+
+appJsLibDir <+= sourceDirectory { src => src / "main" / "webapp" / "js" / "vendor" }
+
+jasmineTestDir <+= sourceDirectory { src => src / "test" / "js" }
+
+jasmineConfFile <+= sourceDirectory { src => src / "test" / "js" / "test.dependencies.js" }
+
+jasmineRequireJsFile <+= sourceDirectory { src => src / "main" / "js" / "vendor" / "require" / "require-2.0.6.js" }
+
+jasmineRequireConfFile <+= sourceDirectory { src => src / "test" / "js" / "require.conf.js" }
+
+(test in Test) <<= (test in Test) dependsOn (jasmine)
+
 resolvers ++= Seq(
   "releases" at "https://oss.sonatype.org/content/groups/scala-tools/"
  )

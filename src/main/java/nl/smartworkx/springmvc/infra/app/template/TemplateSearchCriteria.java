@@ -6,4 +6,5 @@ package nl.smartworkx.springmvc.infra.app.template;
  * Time: 7:57 AM
  */
 public class TemplateSearchCriteria {
+
 }
