@@ -5,10 +5,8 @@ import nl.smartworkx.springmvc.infra.Aggregate;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * User: joris
@@ -22,14 +20,15 @@ public class Template extends Aggregate {
     @Length(max = 50)
     private String name;
 
-    @NotEmpty
-    @ManyToOne
+    @NotNull
+    @ManyToOne(cascade = CascadeType.ALL)
     private Account account;
 
     Template(){}
 
     public Template(CreateTemplateCommand command) {
         this.name = command.getName();
+        this.account = command.getAccount();
     }
 
     public void edit(EditTemplateCommand command) {

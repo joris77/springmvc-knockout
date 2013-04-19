@@ -17,6 +17,9 @@
             <column name="name" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
+            <column name="account_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 
@@ -26,9 +29,6 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="identification" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="template_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
         </createTable>

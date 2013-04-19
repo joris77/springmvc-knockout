@@ -14,9 +14,17 @@
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <mvc:annotation-driven/>
+    <mvc:annotation-driven />
 
     <context:component-scan base-package="nl.smartworkx.springmvc"/>
+
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="converters">
+            <list>
+                <bean class="nl.smartworkx.springmvc.infra.app.account.StringToAccountConverter"></bean>
+            </list>
+        </property>
+    </bean>
 
     <bean id="validator"
           class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>

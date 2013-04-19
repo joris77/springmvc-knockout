@@ -1,40 +1,33 @@
 define("validation", ["knockout"], function (ko) {
 
-    ko.bindingHandlers['validation'] = {
+    ko.bindingHandlers.validation = {
+        init: function (element, valueAccessor) {
+            var form = ko.utils.unwrapObservable(valueAccessor());
 
-
-        // This will be called when the binding is first applied to an element
-        // Set up any initial state, event handlers, etc. here
-        'init': function (element, valueAccessor) {
-            var form = valueAccessor();
-
-            $.each(form.propertiesToValidate, function (i) {
-                var inputElement = $(element).find('#' + this.propertyName);
+            $.each(form.propertiesToValidate(), function (i, property) {
+                var inputElement = $(element).find('#' + property.propertyName);
                 $(inputElement).blur(function (ev) {
-                    form.validateProp(this.id);
+                    form.validateProp(ev.target.id);
                 });
             });
-
-
-            //$(element).find('.error-message').remove();
         },
-        'update': function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+        update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
         }
     };
 
-    ko.bindingHandlers['errors'] = {
-        'init': function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+    ko.bindingHandlers.errors = {
+        init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
             var errors = ko.utils.unwrapObservable(valueAccessor());
         },
-        'update': function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+        update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
             var errors = ko.utils.unwrapObservable(valueAccessor()),
                 jqElem = $(element);
 
             if (errors && errors.length > 0) {
                 jqElem.closest('.control-group').addClass("error");
                 jqElem.empty();
-                $.each(errors, function () {
-                    jqElem.append('<p>' + this.message + '</p>')
+                $.each(errors, function (i, error) {
+                    jqElem.append('<p>' + error.message + '</p>')
                 });
             } else {
                 jqElem.closest('.control-group').removeClass("error");
@@ -44,10 +37,6 @@ define("validation", ["knockout"], function (ko) {
     };
 
 
-    ko.extenders.label = function (target, option) {
-        target.label = option;
-        return target;
-    };
     ko.extenders.validations = function (target, option) {
         target.validations = option;
         return target;
@@ -61,24 +50,36 @@ define("validation", ["knockout"], function (ko) {
             message: " is required."
         },
         validatable: function (model) {
-            model.propertiesToValidate = [];
+
+            function mustPropertyBevalidated(property) {
+                return property.validations;
+            }
+
+            model.propertiesToValidate = function () {
+                var properties = [];
+                for (p in model) {
+                    if (mustPropertyBevalidated(model[p])) {
+                        properties.push(model[p]);
+                    }
+                }
+                return properties;
+            }
 
             for (p in model) {
-                if (model[p].validations) {
-                    model[p].propertyName = p;
-                    model[p].errors = ko.observable();
-                    model.propertiesToValidate.push(model[p]);
-                }
+                var property = model[p];
+                property.propertyName = p;
+                property.errors = ko.observable();
             }
 
             model.validateProp = function (id) {
                 var property = model[id];
                 var errors = [];
-                $.each(property.validations, function () {
-                    if (!this.validate(model[id]())) {
+                if(property)
+                $.each(property.validations, function (i, validation) {
+                    if (!validation.validate(model[id]())) {
                         errors.push({
                             elementId: id,
-                            message: property.label + this.message
+                            message: validation.message
                         });
                     }
                 });
@@ -86,12 +87,25 @@ define("validation", ["knockout"], function (ko) {
                 property.errors(errors);
             }
 
-            model.errors = function(errors){
+            model.errors = function (errors) {
 
+                for(propertyName in errors) {
+                    var property = model[propertyName];
+                    if(!property){
+                        throw "Error handling form error, propertyName: " + propertyName + " not known."
+                    }
+                    property.errors(errors[propertyName]);
+                }
             }
+
+            model.hasErrors = function () {
+                var propertiesWithErrors = $.grep(model.propertiesToValidate(), function (property) {
+                    return property.errors() && property.errors().length > 0
+                });
+                return propertiesWithErrors.length > 0;
+            };
 
             return model;
         }
     };
-
 });

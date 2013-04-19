@@ -1,5 +1,7 @@
 package nl.smartworkx.springmvc.domain.template;
 
+import nl.smartworkx.springmvc.domain.account.Account;
+
 import javax.validation.constraints.Min;
 
 /**
@@ -10,6 +12,8 @@ import javax.validation.constraints.Min;
 public class CreateTemplateCommand {
 
     private String name;
+
+    private Account account;
 
 
     public void setName(String name) {
@@ -27,5 +31,13 @@ public class CreateTemplateCommand {
         return "CreateTemplateCommand{" +
                 "name='" + name + '\'' +
                 '}';
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }

@@ -4,41 +4,64 @@
     <link href="/css/app.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-<div id="menu">
-    <button data-bind="click: function(d,e){ show('home') }">Home</button>
-    <button data-bind="click: function(d,e){ show('edit') }">Edit template</button>
-</div>
-<div id="content" data-bind="template : {name: page()}">
+<div class="container">
+    <div class="navbar">
+        <div class="navbar-inner">
+            <a class="brand" href="#">Payments</a>
+            <ul class="nav">
+                <li><a data-bind="click: function(d,e){ show('home') }">Home</a></li>
+                <li><a data-bind="click: function(d,e){ show('edit') }">Edit template</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="row" data-bind="with: message">
+        <div class="span12">
+            <div class="alert" data-bind="css: type">
+                <button type="button" class="close" data-dismiss="alert"
+                        data-bind="click: $root.removeMessage">&times;</button>
+                <span data-bind="text: messageText"></span>
+            </div>
+        </div>
+    </div>
+    <div id="content" class="row" data-bind="template : {name: page()}">
 
+    </div>
 </div>
 
 <script id="home" type="text/html">
-    <h1>Welkom</h1>
+    <div class="span12">
+        <h1>Welkom</h1>
+    </div>
 </script>
 
 <script id="edit" type="text/html">
-    <form method="POST" data-bind="validation: form">
-        <div data-bind="with: form">
-            <div class="control-group">
-                <label class="control-label" for="name" data-bind="text:name.label"></label>
+    <div class="span12">
+        <form method="POST" data-bind="validation: form">
+            <legend>Template</legend>
+            <div data-bind="with: form">
+                <div class="control-group">
+                    <label class="control-label"  for="name">Name</label>
 
-                <div class="controls">
-                    <input id="name" type="text" name="name" data-bind="value: name">
-                    <span class="help-inline" data-bind="errors: name.errors"/>
+                    <div class="controls">
+                        <input id="name"  type="text" name="name" data-bind="value: name">
+                        <span class="help-inline" data-bind="errors: name.errors"/>
+                    </div>
                 </div>
-            </div>
-            <div>
-                <label for="account">Account</label>
+                <div class="control-group">
+                    <label class="control-label" for="account">Account</label>
 
-                <div class="controls">
-                    <input id="account" type="text" name="account" data-bind="value: account">
-                    <span class="help-inline" data-bind="errors: accountErrors"/>
+                    <div class="controls">
+                        <input id="account" type="text" name="account" data-bind="value: account">
+                        <span class="help-inline" data-bind="errors: account.errors"/>
+                    </div>
                 </div>
-            </div>
 
-        </div>
-        <input type="submit" data-bind="click: save">
-    </form>
+            </div>
+            <div class="form-actions">
+                <input type="submit" class="btn btn-primary" data-bind="css: {disabled: form.hasErrors()}, disable: form.hasErrors(), click: save">
+            </div>
+        </form>
+    </div>
 </script>
 
 <script src="js/lib/require/require-2.0.6.js"></script>

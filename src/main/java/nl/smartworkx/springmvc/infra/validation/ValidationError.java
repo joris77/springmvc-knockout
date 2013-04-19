@@ -15,17 +15,25 @@ public class ValidationError {
     private final String message;
 
     public ValidationError(ConstraintViolation violation) {
-        this.key = violation.getPropertyPath().toString();
+        this.key = getKey(violation);
         this.message = violation.getMessage();
     }
 
+    public static String getKey(ConstraintViolation violation) {
+        return violation.getPropertyPath().toString();
+    }
+
     public ValidationError(ObjectError error) {
-        if(error instanceof FieldError){
-            this.key = ((FieldError)error).getField();
-        }else{
-             this.key = error.getObjectName();
-        }
+        this.key = getKey(error);
         this.message = error.getDefaultMessage();
+    }
+
+    public static String getKey(ObjectError error) {
+        if(error instanceof FieldError){
+            return ((FieldError)error).getField();
+        }else{
+             return error.getObjectName();
+        }
     }
 
     public String getKey(){

@@ -1,4 +1,4 @@
-define("service", ["jquery"], function ($) {
+define("service", ["jquery","knockout","knockoutmapping"], function ($, ko, m) {
 
     /**
      *  Enhances a service with the standard crud methods. This service is mainly a wrapper around $.ajax function of jquery.
@@ -19,15 +19,16 @@ define("service", ["jquery"], function ($) {
 
         function ajax(options) {
 
+            var data = JSON.stringify(m.toJS(options.data));
             $.ajax({
                 async: true,
                 url: options.url || modelUrl,
                 type: options.type,
                 contentType: options.contentType || 'application/json',
-                data: JSON.stringify(options.data),
+                data: data,
                 dataType: options.dataType || "json",
-                success: success,
-                error: error
+                success: options.success,
+                error: options.error
             });
         }
 
@@ -78,9 +79,7 @@ define("service", ["jquery"], function ($) {
 
     return {
         templateService: service({url: "templates"}, {
-            specificFunction: function () {
-                console.log('specific')
-            }
+
         })
     };
 

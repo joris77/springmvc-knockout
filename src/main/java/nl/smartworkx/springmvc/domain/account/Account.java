@@ -2,6 +2,7 @@ package nl.smartworkx.springmvc.domain.account;
 
 import nl.smartworkx.springmvc.infra.Aggregate;
 import nl.smartworkx.springmvc.infra.DomainEntity;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Entity;
 
@@ -13,12 +14,22 @@ import javax.persistence.Entity;
 @Entity
 public class Account extends DomainEntity {
 
+    @NotEmpty
     private String identification;
 
-    public Account() {
+    Account() {
+    }
+
+    public Account(String identification) {
+        this.identification = identification;
     }
 
     public String getIdentification() {
+        return identification;
+    }
+
+    @Override
+    public String toString() {
         return identification;
     }
 }
