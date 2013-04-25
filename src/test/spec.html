@@ -1,0 +1,56 @@
+<html>
+<head>
+    <title>My First Unit Test With Jasmine And RequireJS</title>
+
+    <!-- Include the Jasmine assets for running in an HTML page. -->
+    <link rel="stylesheet" type="text/css" href="js/lib/jasmine-1.2.0/jasmine.css"></link>
+    <script type="text/javascript" src="js/lib/jasmine-1.2.0/jasmine.js"></script>
+    <script type="text/javascript" src="js/lib/jasmine-1.2.0/jasmine-html.js"></script>
+
+    <script type="text/javascript">
+        EnvJasmine = {
+            rootDir: '../main/webapp/js',
+            specsDir: '../../../test/js/specs'
+        }
+    </script>
+
+    <script src="../main/webapp/js/lib/require/require-2.0.6.js"></script>
+    <script src="js/require.conf.js"></script>
+
+
+    <script type="text/javascript">
+
+        require(
+                [
+                    "specs/sorting.spec"
+                ], function () {
+                    var jasmineEnv = jasmine.getEnv();
+                    var htmlReporter = new jasmine.HtmlReporter();
+                    jasmineEnv.addReporter(htmlReporter);
+
+                    jasmineEnv.specFilter = function (spec) {
+                        return htmlReporter.specFilter(spec);
+                    };
+
+
+                    var currentWindowOnload = window.onload;
+                    window.onload = function () {
+                        if (currentWindowOnload) {
+                            currentWindowOnload();
+                        }
+
+                        execJasmine();
+                    };
+
+                    function execJasmine() {
+                        jasmineEnv.execute();
+                    }
+                });
+
+    </script>
+
+</head>
+<body>
+<!-- Left intentionally blank. -->
+</body>
+</html>

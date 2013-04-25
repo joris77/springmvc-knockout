@@ -78,9 +78,7 @@ define("service", ["jquery","knockout","knockoutmapping"], function ($, ko, m) {
     }
 
     return {
-        templateService: service({url: "templates"}, {
-
-        })
+        templateService: service({url: "templates"})
     };
 
 });

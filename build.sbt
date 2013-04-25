@@ -25,13 +25,13 @@ seq(jasmineSettings : _*)
 
 appJsDir <+= sourceDirectory { src => src / "main" / "webapp" / "js" }
 
-appJsLibDir <+= sourceDirectory { src => src / "main" / "webapp" / "js" / "vendor" }
+appJsLibDir <+= sourceDirectory { src => src / "main" / "webapp" / "js" / "lib" }
 
 jasmineTestDir <+= sourceDirectory { src => src / "test" / "js" }
 
 jasmineConfFile <+= sourceDirectory { src => src / "test" / "js" / "test.dependencies.js" }
 
-jasmineRequireJsFile <+= sourceDirectory { src => src / "main" / "js" / "vendor" / "require" / "require-2.0.6.js" }
+jasmineRequireJsFile <+= sourceDirectory { src => src / "main" / "js" / "lib" / "require" / "require-2.0.6.js" }
 
 jasmineRequireConfFile <+= sourceDirectory { src => src / "test" / "js" / "require.conf.js" }
 

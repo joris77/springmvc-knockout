@@ -1,12 +1,11 @@
 require.config({
     baseUrl: EnvJasmine.rootDir,
     paths: {
-        mocks:      EnvJasmine.mocksDir,
-        specs:      EnvJasmine.specsDir,
+        specs:  EnvJasmine.specsDir,
 
-        // Libraries
-        // FIXME: we don't want to depend on jQuery necessarily, but for
-        // now the sbt plugin requires it
-        jquery:     'vendor/jquery/jquery-1.8.2'
+        jquery: "lib/jquery/jquery-1.8.2",
+        knockout: "lib/knockout/knockout-2.2.0",
+        knockoutmapping: "lib/knockout/knockout.mapping",
+        jqueryui: "lib/jquery/jquery-ui-1.9.1.custom"
     }
 });
